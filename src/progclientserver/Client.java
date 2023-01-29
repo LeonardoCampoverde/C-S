@@ -49,7 +49,7 @@ public class Client {
         }   
         
     }
-    
+    /*
     void sendMsg(String msg){
         
         try {
@@ -62,6 +62,7 @@ public class Client {
         }
         
     }
+    */
     
     void sendMsg(){
         try {
