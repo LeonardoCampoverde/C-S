@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author elmiao
+ * @version 03/02/23
  */
 public class Client {
     private String host="127.0.0.1";
