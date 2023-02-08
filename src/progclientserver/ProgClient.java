@@ -26,10 +26,21 @@ public class ProgClient {
             //Scanner sc = new Scanner(System.in);
             //String msg = sc.nextLine();
             Client c=new Client();
-            c.sendMsg();
-            String mes=c.readMsg();
-            System.out.println(mes);
-            c.close();
+
+            do{
+                c.sendMsg();
+                String mes;
+                mes=c.getMsg();
+                if(mes.equals("USCIRE"))
+                        break;
+                System.out.println(mes);
+            }while(true);
+            
+            
+            
+            System.out.println("\u001b[0m");
+
+
             
     }
     

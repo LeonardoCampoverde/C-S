@@ -71,18 +71,19 @@ public class Client {
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.print("SCRIVERE MESSAGGIO: ");
+        System.out.print("\u001b[32m>");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String msg = "";
+        byte msg[]=null;
         try {
-            msg = br.readLine();
+            msg = br.readLine().getBytes();
+            
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            System.out.println("MANDANDO MESSAGGIO: "+msg);
-            
-            sOut.write(msg.getBytes());
+            System.out.println("MANDANDO MESSAGGIO: "+new String(msg));
+            sOut.writeInt(msg.length);
+            sOut.write(msg);
             //sOut.writeUTF(msg);
             sOut.flush();
             
@@ -98,8 +99,8 @@ public class Client {
     
     
     
-    String readMsg(){
-        
+    String getMsg(){
+        String msg=null;
         try {
             sIn = new DataInputStream(s.getInputStream());
         } catch (IOException ex) {
@@ -107,20 +108,23 @@ public class Client {
         }
         
         System.out.println("LETTURA MESSAGGIO...");
-        String msg=null;
+
         try {
             InputStream dInStream = s.getInputStream();
             sIn = new DataInputStream(dInStream);
             
             //msg= sIn.readUTF();
-            msg= new BufferedReader(new InputStreamReader(sIn)).readLine();
-            sIn.close();
+            int length = sIn.readInt();
+            byte msgByte[]=new byte[length];
+            sIn.readFully(msgByte, 0, length);
+            
+            msg = new String(msgByte);
+
         } catch (IOException ex) {
             
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             
         }
-        System.out.println("MESSAGGIO RICEVUTO: "+msg);
         
         return msg;
         

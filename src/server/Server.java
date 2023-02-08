@@ -25,6 +25,7 @@ public class Server {
     Socket client;
     DataInputStream sIn;
     DataOutputStream sOut;
+    String help="\u001b[36mCOMANDI UTILIZZABILI:\n\u001b[36m-PING: RISPONDE CON LA PAROLA '\u001b[31;1mPONG\u001b[36m'\n\u001b[36m-USCIRE: ESCE DAL TERMINALE PIU FIGO DEL \u001b[35mMONDO\u001b[36m";
     
     Server(){
         try {
@@ -54,17 +55,23 @@ public class Server {
     
    
     void sendMsg(String msg){
-        
+
         try {
             sOut = new DataOutputStream(client.getOutputStream());
             //sOut.writeUTF(msg);
             System.out.println("STO MANDANDO IL MESSAGGIO: "+msg);
+            byte msgByte[]=null;
+            sOut.writeInt(msg.length());
             sOut.write(msg.getBytes());
             sOut.flush();
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    String getHelp(){
+        return this.help;
     }
     
     String getMsg(){
@@ -76,8 +83,10 @@ public class Server {
             sIn = new DataInputStream(client.getInputStream());
             
             //msg=sIn.readUTF();    
-            BufferedReader br= new BufferedReader(new InputStreamReader(sIn));
-            msg= br.readLine();
+            int length= sIn.readInt();
+            byte msgByte[]=new byte[length];
+            sIn.readFully(msgByte, 0, length);
+            msg= new String(msgByte);
             System.out.println("MESSAGGIO LETTO: "+msg);
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
