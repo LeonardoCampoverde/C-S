@@ -27,14 +27,7 @@ public class ProgClient {
             //String msg = sc.nextLine();
             Client c=new Client();
 
-            do{
-                c.sendMsg();
-                String mes;
-                mes=c.getMsg();
-                if(mes.equals("USCIRE"))
-                        break;
-                System.out.println(mes);
-            }while(true);
+            c.communication();
             
             
             

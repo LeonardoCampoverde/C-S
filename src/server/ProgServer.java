@@ -24,41 +24,20 @@ public class ProgServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
-        Server s = new Server();
-
-        s.accept();
-        String msgIn = null;
-        do {
-            msgIn = s.getMsg();
-            String msgOut = null;
-            System.out.println(msgIn);
-            if (msgIn != null) {
-                if (msgIn.equals("PING")) {
-                    msgOut = "\u001b[32mPONG\u001b[0m";
-
-                } else if (msgIn.equals("AIUTO")) {
-
-                    msgOut=s.getHelp();
-
-                } else if (msgIn.equals("USCIRE")) {
-                    s.sendMsg("USCIRE");
-                    break;
-
-                } else {
-                    msgOut = "\u001b[31mSE NON SAI I COMANDI DIGITA 'AIUTO'";
-                }
-                s.sendMsg(msgOut);
-                System.out.println("MESSAGGIO INVIATO: " + msgOut);
-            } else {
-                System.out.println("PROBLEMA CON LA LETTURA DATI");
+        
+        while (true) {
+            Server s = new Server();
+            if (!s.connect()) {
+                return;
             }
 
-            System.out.println("\u001b[0m");
-        } while (true);
+            s.communication();
 
-        s.close();
+            s.close();
+
+        }
 
     }
 }
